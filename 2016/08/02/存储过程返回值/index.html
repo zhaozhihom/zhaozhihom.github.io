@@ -1,98 +1,15 @@
-extends includes/layout.pug
-
-block top_img
-  - var top_img = page.top_img || theme.post_meta.top_img || theme.top_img || config.top_img
-  if (top_img && page.top_img !== false)
-    - var flag = top_img === true ? 'no-bg' : undefined
-    div#top-container(style=`background-image: url(${top_img})` class=flag)
-      include ./includes/header.pug
-      #post-info
-        #post-title= page.title || _p('no_title')
-        #post-meta
-          if (theme.post_meta.date_type)
-            - var date_type = theme.post_meta.date_type === 'updated' ? 'updated' : 'date'
-            time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-          if (theme.post_meta.categories && page.categories.data.length > 0)
-            if (theme.post_meta.date_type)
-              span.post-meta__separator |
-            each item, index in page.categories.data
-              i.fa.fa-inbox.post-meta__icon(aria-hidden="true")
-              a(href=url_for(item.path)).post-meta__categories #[=item.name]
-              if (index < page.categories.data.length - 1)
-                 i.fa.fa-angle-right(aria-hidden="true")
-          if (theme.disqus.enable && theme.disqus.count)
-            if (theme.post_meta.date_type || theme.post_meta.categories && page.categories.data.length > 0)
-              span.post-meta__separator |
-            i.fa.fa-comment-o.post-meta__icon(aria-hidden="true")
-            a(href=url_for(page.path) + '#disqus_thread')
-              span.disqus-comment-count(data-disqus-identifier=page.path)
-          if (theme.wordcount && theme.wordcount.enable)
-            .post-meta-wordcount
-              span= _p('post.wordcount') + ': '
-              span.word-count= wordcount(page.content)
-              span.post-meta__separator |
-              span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-  else
-    div#top-container.plain
-      include ./includes/header.pug
-
-block content
-  article#post(class="")
-    if (!top_img)
-      #post-title.plain= page.title || _p('no_title')
-      #post-meta
-        if (theme.post_meta.date_type)
-          - var date_type = theme.post_meta.date_type === 'updated' ? '' : 'date'
-          time.post-meta__date #[i.fa.fa-calendar(aria-hidden="true")] #[=date(page[date_type], config.date_format)]
-        if (theme.post_meta.categories && page.categories.data.length > 0)
-          if (theme.post_meta.date_type)
-            span.post-meta__separator |
-          each item, index in page.categories.data
-            i.fa.fa-inbox(aria-hidden="true")
-            a(href=url_for(item.path)).post-meta__categories  #[=item.name]
-            if (index < page.categories.data.length - 1)
-                i.fa.fa-angle-right.post-meta__separator(aria-hidden="true")
-        if (theme.disqus.enable && theme.disqus.count)
-          if (theme.post_meta.date_type || theme.post_meta.categories && page.categories.data.length > 0)
-            span.post-meta__separator |
-          i.fa.fa-comment-o(aria-hidden="true")
-          a(href=url_for(page.path) + '#disqus_thread')
-            span.disqus-comment-count(data-disqus-identifier=page.path)
-        if (theme.wordcount && theme.wordcount.enable)
-          span.post-meta__separator |
-          span.post-meta-wordcount
-            span= _p('post.wordcount') + ': '
-            span.word-count= wordcount(page.content)
-            span.post-meta__separator |
-            span= _p('post.min2read', min2read(page.content, {cn: 350, en: 160}))
-    #post-content.article-container!= page.content
-  if (theme.post_copyright && theme.post_copyright.enable)
-    .post-copyright
-      .post-copyright__author
-        span.post-copyright-meta= _p('post.copyright.author') + ": "
-        span.post-copyright-info
-          a(href=`mailto:${config.email}`) #[=config.author]
-      .post-copyright__type
-        span.post-copyright-meta= _p('post.copyright.link') + ": "
-        span.post-copyright-info
-          a(href=url_for(page.permalink)) #[=page.permalink]
-      .post-copyright__notice
-        span.post-copyright-meta= _p('post.copyright.copyright_notice') + ": "
-        span.post-copyright-info!= _p('post.copyright.copyright_content', theme.post_copyright.license_url, theme.post_copyright.license, config.url, config.title)
-  if (theme.post_meta.tags)
-    .post-meta__tag-list
-      each item, index in page.tags.data
-        a(href=url_for(item.path)).post-meta__tags #[=item.name]
-  if (theme.QR_code)
-    if (theme.QR_code.length > 0)
-      .post-qr-code
-        each item in theme.QR_code
-          .post-qr-code-item
-            img.post-qr-code__img(src=(item.itemlist||item).img)
-            .post-qr-code__desc=(item.itemlist||item).text
-  include includes/share/index.pug
-  include includes/pagination.pug
-  if (theme.adv && theme.adv.enable)
-    .post-adv!= theme.adv.info
-  if page.comments !== false
-    include includes/comments/index.pug
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="存储过程返回值--SQL Server"><meta name="keywords" content="存储过程,sqlserver"><meta name="author" content="HK journalist,undefined"><meta name="copyright" content="HK journalist"><title>存储过程返回值--SQL Server | zzh's Notes</title><link rel="shortcut icon" href="/my-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.5.6"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css?version=1.5.6"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+} </script></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#存储过程的三种返回方式"><span class="toc-number">1.</span> <span class="toc-text">存储过程的三种返回方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#声明output参数"><span class="toc-number">1.1.</span> <span class="toc-text">声明output参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#return-返回"><span class="toc-number">1.2.</span> <span class="toc-text">return 返回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#返回表结果集"><span class="toc-number">1.3.</span> <span class="toc-text">返回表结果集</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">HK journalist</div><div class="author-info__description text-center">做一点微小的工作</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">13</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">10</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container" style="background-image: url(true)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">zzh's Notes</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span></div><div id="post-info"><div id="post-title">存储过程返回值--SQL Server</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2016-08-02</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h2 id="存储过程的三种返回方式"><a href="#存储过程的三种返回方式" class="headerlink" title="存储过程的三种返回方式"></a>存储过程的三种返回方式</h2><p>记录一下存储过程返回值种类及其接收方式</p>
+<a id="more"></a>
+<h3 id="声明output参数"><a href="#声明output参数" class="headerlink" title="声明output参数"></a>声明output参数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> proc get_output(</span><br><span class="line">    @<span class="keyword">id</span> <span class="built_in">varchar</span>(<span class="number">32</span>),</span><br><span class="line">    @<span class="keyword">result</span> <span class="built_in">int</span> <span class="keyword">output</span></span><br><span class="line">) </span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">select</span> @<span class="keyword">result</span> = age <span class="keyword">from</span> t_student  <span class="keyword">where</span> <span class="keyword">id</span> = @<span class="keyword">id</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> @arg <span class="built_in">int</span></span><br><span class="line">exec get_output <span class="string">'111'</span>, @arg <span class="keyword">output</span></span><br></pre></td></tr></table></figure>
+<h3 id="return-返回"><a href="#return-返回" class="headerlink" title="return 返回"></a>return 返回</h3><p>只能返回int类型,可以直接写成return select age from t_student  where id = @id; 若成功返回0, 失败返回非零正数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> proc get_output(</span><br><span class="line">    @<span class="keyword">id</span> <span class="built_in">varchar</span>(<span class="number">32</span>),</span><br><span class="line"></span><br><span class="line">) </span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> <span class="keyword">result</span> <span class="built_in">int</span></span><br><span class="line">    <span class="keyword">select</span> @<span class="keyword">result</span> = age <span class="keyword">from</span> t_student  <span class="keyword">where</span> <span class="keyword">id</span> = @<span class="keyword">id</span></span><br><span class="line">    <span class="keyword">return</span> @<span class="keyword">result</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> @arg <span class="built_in">int</span></span><br><span class="line">exec @arg = get_output <span class="string">'111'</span></span><br></pre></td></tr></table></figure>
+<h3 id="返回表结果集"><a href="#返回表结果集" class="headerlink" title="返回表结果集"></a>返回表结果集</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> proc get_output(</span><br><span class="line">    @<span class="keyword">id</span> <span class="built_in">varchar</span>(<span class="number">32</span>),</span><br><span class="line">) </span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">select</span> * <span class="keyword">from</span> t_student  <span class="keyword">where</span> <span class="keyword">id</span> = @<span class="keyword">id</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">select</span> top <span class="number">0</span> * <span class="keyword">into</span> #temp <span class="keyword">from</span> t_student</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> #temp exec get_output <span class="string">'111'</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span>  #temp</span><br></pre></td></tr></table></figure></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">HK journalist</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2016/08/02/存储过程返回值/">http://yoursite.com/2016/08/02/存储过程返回值/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">zzh's Notes</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/存储过程/">存储过程</a><a class="post-meta__tags" href="/tags/sqlserver/">sqlserver</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2016/09/02/自动拆装箱/"><i class="fa fa-chevron-left">  </i><span>关于Java自动拆箱装箱的思考</span></a></div><div class="next-post pull-right"><a href="/2016/07/22/我的第一篇博客/"><span>我的第一篇博客</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2018 By HK journalist</div><div class="framework-info"><span>驱动 - </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file-o"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="/js/third-party/anime.min.js"></script><script src="/js/third-party/jquery.min.js"></script><script src="/js/third-party/jquery.fancybox.min.js"></script><script src="/js/third-party/velocity.min.js"></script><script src="/js/third-party/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.5.6"></script><script src="/js/fancybox.js?version=1.5.6"></script><script src="/js/sidebar.js?version=1.5.6"></script><script src="/js/copy.js?version=1.5.6"></script><script src="/js/fireworks.js?version=1.5.6"></script><script src="/js/transition.js?version=1.5.6"></script><script src="/js/scroll.js?version=1.5.6"></script><script src="/js/head.js?version=1.5.6"></script></body></html>

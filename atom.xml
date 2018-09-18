@@ -54,9 +54,9 @@
     </summary>
     
     
-      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
-    
       <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
     
   </entry>
   
