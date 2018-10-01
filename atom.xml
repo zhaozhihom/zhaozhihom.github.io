@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-09-20T11:21:06.893Z</updated>
+  <updated>2018-10-01T11:06:17.380Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>es(一) elasticsearch安装</title>
+    <link href="http://yoursite.com/2018/04/23/2018-04-22-elasticsearch-install/"/>
+    <id>http://yoursite.com/2018/04/23/2018-04-22-elasticsearch-install/</id>
+    <published>2018-04-23T14:13:20.000Z</published>
+    <updated>2018-10-01T11:06:17.380Z</updated>
+    
+    <content type="html"><![CDATA[<p>按照官网上的指导安装了elasticsearch-6.0.1, 系统版本Ubuntu 16.04.3, 1g内存，记录一下遇到的问题</p><h2 id="1-安装位置"><a href="#1-安装位置" class="headerlink" title="1. 安装位置"></a>1. 安装位置</h2><p>我是用tar解压的方式安装的，起初安装在root的用户目录下，无法启动。mv到/opt目录之后可以启动</p><h2 id="2-JVM内存配置"><a href="#2-JVM内存配置" class="headerlink" title="2. JVM内存配置"></a>2. JVM内存配置</h2><p>修改config/jvm.options, 默认为1g，我修改为256m</p><a id="more"></a><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-Xms256m #初始堆大小</span><br><span class="line">-Xmx256m #最大堆大小</span><br></pre></td></tr></table></figure><h2 id="3-root用户无法启动"><a href="#3-root用户无法启动" class="headerlink" title="3. root用户无法启动"></a>3. root用户无法启动</h2><p>es默认无法用root账户启动，有两个解决办法，</p><p>一是创建一个新用户，分配elasticsearch文件夹的权限：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">groupadd elk  <span class="comment"># 创建用户组elk</span></span><br><span class="line">useradd elk -g elk -p 111111  <span class="comment"># 创建新用户elk，-g elk 设置其用户组为 elk，-p 111 设置其密码6个1</span></span><br><span class="line">chown -R elk:elk /elasticsearch  <span class="comment"># 更改 /elasticsearch 文件夹及内部文件的所属用户及组为 elk:elk</span></span><br><span class="line">su elk <span class="comment"># 切换到非root用户elk下来</span></span><br></pre></td></tr></table></figure><p>二是赋予root启动权限：</p><p>在启动文件：bin/elasearch中加如下面一段：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ES_JAVA_OPTS="-Des.insecure.allow.root=true"</span><br></pre></td></tr></table></figure><h2 id="4-系统参数修改"><a href="#4-系统参数修改" class="headerlink" title="4. 系统参数修改"></a>4. 系统参数修改</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ERROR: bootstrap checks failed**</span><br><span class="line"></span><br><span class="line">max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]</span><br><span class="line">max number of threads [1024] for user [lish] likely too low, increase to at least [2048]</span><br></pre></td></tr></table></figure><p>vi /etc/sysctl.conf </p><p>添加下面配置：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm.max_map_count=655360</span><br></pre></td></tr></table></figure><p>并执行命令：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p</span><br></pre></td></tr></table></figure><p>vi /etc/security/limits.d/90-nproc.conf </p><p>添加如下内容：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@elk soft nproc 2048</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;按照官网上的指导安装了elasticsearch-6.0.1, 系统版本Ubuntu 16.04.3, 1g内存，记录一下遇到的问题&lt;/p&gt;
+&lt;h2 id=&quot;1-安装位置&quot;&gt;&lt;a href=&quot;#1-安装位置&quot; class=&quot;headerlink&quot; title=&quot;1. 安装位置&quot;&gt;&lt;/a&gt;1. 安装位置&lt;/h2&gt;&lt;p&gt;我是用tar解压的方式安装的，起初安装在root的用户目录下，无法启动。mv到/opt目录之后可以启动&lt;/p&gt;
+&lt;h2 id=&quot;2-JVM内存配置&quot;&gt;&lt;a href=&quot;#2-JVM内存配置&quot; class=&quot;headerlink&quot; title=&quot;2. JVM内存配置&quot;&gt;&lt;/a&gt;2. JVM内存配置&lt;/h2&gt;&lt;p&gt;修改config/jvm.options, 默认为1g，我修改为256m&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://yoursite.com/tags/Java/"/>
+    
+      <category term="elasticsearch" scheme="http://yoursite.com/tags/elasticsearch/"/>
+    
+  </entry>
   
   <entry>
     <title>一种线程池的简单实现</title>
